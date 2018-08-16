@@ -48,13 +48,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let request = VNCoreMLRequest(model: model) { (request, error) in
             guard let results = request.results as? [VNClassificationObservation] else {fatalError("Model failed to process image")}
             
-            if let firstResult = results.first {
-                if firstResult.identifier.contains("hotdog") {
-                    self.navigationItem.title = "Hotdog!"
-                } else {
-                    self.navigationItem.title = "Not Hotdog!"
-                }
-            }
+//            if let firstResult = results.first {
+//                if firstResult.identifier.contains("hotdog") {
+//                    self.navigationItem.title = "Hotdog!"
+//                } else {
+//                    self.navigationItem.title = "Not Hotdog!"
+//                }
+//            }
+            
+            guard let firstResult = results.first else {fatalError("Failed Fetching first Result")}
+            
+            self.navigationItem.title = "\(firstResult.identifier) \(String(format: "%.f" ,firstResult.confidence * 100))%"
+            
             
         }
         
